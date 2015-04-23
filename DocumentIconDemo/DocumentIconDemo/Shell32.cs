@@ -94,6 +94,9 @@ namespace ShellTestApp
             uint cbFileInfo,
             uint uFlags
             );
+
+      
+
     }
 
     public class User32

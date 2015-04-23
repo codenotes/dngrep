@@ -7,6 +7,24 @@ using System.Windows.Forms;
 using System.IO;
 using System.Security.Permissions;
 
+
+
+//namespace ShellDll
+//{
+    [ComImport()]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [GuidAttribute("000214e8-0000-0000-c000-000000000046")]
+    public interface IShellExtInit
+    {
+        [PreserveSig()]
+        int Initialize(
+            IntPtr pidlFolder,
+            IntPtr lpdobj,
+            uint hKeyProgID);
+    }
+//}
+
+
 namespace Peter
 {
     /// <summary>
@@ -35,6 +53,13 @@ namespace Peter
     /// </example>
     public class ShellContextMenu : NativeWindow
     {
+
+        [DllImport("shell32.dll", PreserveSig = false)]
+        public static extern IntPtr SHGetIDListFromObject(
+            [In, MarshalAs(UnmanagedType.IUnknown)] object punk);
+
+
+
         #region Constructor
         /// <summary>Default constructor</summary>
         public ShellContextMenu()
@@ -467,6 +492,11 @@ namespace Peter
         /// </summary>
         /// <param name="arrFI">FileInfos (should all be in same directory)</param>
         /// <param name="pointScreen">Where to show the menu</param>
+        /// 
+
+
+
+        public static Guid IID_IShellExtInit = new Guid("{000214e8-0000-0000-c000-000000000046}");
         private void ShowContextMenu(Point pointScreen)
         {
             IntPtr pMenu = IntPtr.Zero,
@@ -488,27 +518,55 @@ namespace Peter
                     return;
                 }
 
+//new stuff
+
+//                HRESULT
+//SHGetIDListFromObject (
+//    IUnknown *punk,
+//    PIDLIST_ABSOLUTE *ppidl);
+
+
+                IntPtr iShellExtInitPtr;
+                if (Marshal.QueryInterface(
+                    iContextMenuPtr,
+                    ref IID_IShellExtInit,
+                    out iShellExtInitPtr) == S_OK)
+                {
+                    IShellExtInit iShellExtInit = Marshal.GetTypedObjectForIUnknown(
+                        iShellExtInitPtr, typeof(IShellExtInit)) as IShellExtInit;
+
+                    //  PIDL pidlFull = item.PIDLFull;
+                    //iShellExtInit.Initialize(pidlFull.Ptr, IntPtr.Zero, 0);
+
+                    IntPtr p = SHGetIDListFromObject(_oParentFolder);
+                    
+                    iShellExtInit.Initialize(p, IntPtr.Zero, 0);
+
+                    Marshal.ReleaseComObject(iShellExtInit);
+                    Marshal.Release(iShellExtInitPtr);
+                    // pidlFull.Free();
+
+
+                }
+
+//end new stuff
+
+
                 pMenu = CreatePopupMenu();
 
-                //int nResult = _oContextMenu.QueryContextMenu(
-                //    pMenu,
-                //    0,//MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_BITMAP | MIIM_STRING, //0,
-                //    CMD_FIRST,
-                //    CMD_LAST,
-                //    CMF.EXPLORE
-                    
-                //    |CMF.EXTENDEDVERBS|
-                //    CMF.NORMAL |
-
-                //    ((Control.ModifierKeys & Keys.Shift) != 0 ? CMF.EXTENDEDVERBS : 0));
-
                 int nResult = _oContextMenu.QueryContextMenu(
-                 pMenu,
-                 0,//MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_BITMAP | MIIM_STRING, //0,
-                 1,
-                 50000,
-                 CMF.EXPLORE | CMF.NORMAL
-                    );
+                    pMenu,
+                    0,//MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_BITMAP | MIIM_STRING, //0,
+                    CMD_FIRST,
+                    CMD_LAST,
+                    CMF.EXPLORE
+
+                    | CMF.EXTENDEDVERBS |
+                    CMF.NORMAL |
+
+                    ((Control.ModifierKeys & Keys.Shift) != 0 ? CMF.EXTENDEDVERBS : 0));
+
+       
 
                 Marshal.QueryInterface(iContextMenuPtr, ref IID_IContextMenu2, out iContextMenuPtr2);
                 Marshal.QueryInterface(iContextMenuPtr, ref IID_IContextMenu3, out iContextMenuPtr3);
