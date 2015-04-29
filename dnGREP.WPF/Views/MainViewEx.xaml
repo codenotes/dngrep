@@ -31,144 +31,132 @@
     <Window.InputBindings>
         <KeyBinding Key="Escape" Command="{Binding CloseCommand}"/>
     </Window.InputBindings>
-
-    <Grid x:Name="gridMain" Margin="0,-1,0,1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25" />
-            <RowDefinition Height="*" MinHeight="300"/>
-            <RowDefinition Height="25" />
-        </Grid.RowDefinitions>
-        <Grid x:Name="gridTop" Grid.Row="0" Background="{Binding Background, ElementName=statusBar}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="70" />
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" FontFamily="Microsoft Sans Serif" FontWeight="Bold" FontSize="16" Text="dnGREP"/>
-            <Menu Background="{Binding Background, ElementName=gridTop}" x:Name="mnuMainMenu" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource DefaultStyle}">
-                <MenuItem x:Name="undoToolStripMenuItem" Header="_Undo" Command="{Binding UndoCommand}" Height="{Binding ActualHeight, ElementName=statusBar}"/>
-                <MenuItem Header="_Options..." Command="{Binding OptionsCommand}" Height="{Binding ActualHeight, ElementName=statusBar}"/>
-                <MenuItem Header="_Bookmarks..." Command="{Binding BookmarkOpenCommand}" Height="{Binding ActualHeight, ElementName=statusBar}"/>
-                <MenuItem Header="_About" x:Name="helpToolStripMenuItem" Height="{Binding ActualHeight, ElementName=statusBar}">
-                    <MenuItem Command="{Binding HelpCommand}" Header="_Help"/>
-                    <MenuItem Command="{Binding AboutCommand}" Header="About..."/>
-                </MenuItem>
-            </Menu>
-        </Grid>
-        <DockPanel LastChildFill="True" Margin="0,24,0,1" Grid.RowSpan="2" >
-            <GroupBox Header="Search in" DockPanel.Dock="Top">
-                <Grid>
+    <TabControl>
+        <TabItem Header="Grep">
+            <Grid x:Name="gridMain" Margin="0,-1,0,1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="*" MinHeight="300"/>
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="gridTop" Grid.Row="0" Background="{Binding Background, ElementName=statusBar}">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70" />
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="48" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Vertical" >
-                        <TextBox Text="boob" Grid.Column="1"  Margin="47,0,0,0" KeyUp="TextBox_KeyUp"/>
-                        <CheckBox Command="{Binding EvEnable}" Grid.Column="1" Width="42" HorizontalAlignment="Left" Content="Ev"/>
-                        <Controls:FolderSelectDropdown Grid.Column="1" x:Name="tbFolderName" Margin="47,0,0,0"/>
-                    </StackPanel>
-                        <Button Command="{Binding BrowseCommand}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnBrowse" 
-                            ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
+                    <TextBlock Grid.Column="0" FontFamily="Microsoft Sans Serif" FontWeight="Bold" FontSize="16" Text="dnGREP"/>
+                    <Menu Background="{Binding Background, ElementName=gridTop}" x:Name="mnuMainMenu" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource DefaultStyle}">
+                        <MenuItem x:Name="undoToolStripMenuItem" Header="_Undo" Command="{Binding UndoCommand}" Height="{Binding ActualHeight, ElementName=statusBar}"/>
+                        <MenuItem Header="_Options..." Command="{Binding OptionsCommand}" Height="{Binding ActualHeight, ElementName=statusBar}"/>
+                        <MenuItem Header="_Bookmarks..." Command="{Binding BookmarkOpenCommand}" Height="{Binding ActualHeight, ElementName=statusBar}"/>
+                        <MenuItem Header="_About" x:Name="helpToolStripMenuItem" Height="{Binding ActualHeight, ElementName=statusBar}">
+                            <MenuItem Command="{Binding HelpCommand}" Header="_Help"/>
+                            <MenuItem Command="{Binding AboutCommand}" Header="About..."/>
+                        </MenuItem>
+                    </Menu>
                 </Grid>
-            </GroupBox>
-            <GroupBox Header="Filename Search" DockPanel.Dock="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="48" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Name="grid1">
-
-                        <WindowsFormsHost>
-                            <sb:FileList   x:Name="SHFileList" Click="SHFileList_Click"/>
-                        </WindowsFormsHost>
-
-                    </Grid>
-                    <Button Command="{Binding FileNameSearch}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnFileNameSearch" 
+                <DockPanel LastChildFill="True" Margin="0,24,0,1" Grid.RowSpan="2" >
+                    <GroupBox Header="Search in" DockPanel.Dock="Top">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="48" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Vertical" >
+                              
+                               
+                                <Controls:FolderSelectDropdown Grid.Column="1" x:Name="tbFolderName" Margin="47,0,0,0"/>
+                            </StackPanel>
+                            <Button Command="{Binding BrowseCommand}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnBrowse" 
                             ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
+                        </Grid>
+                    </GroupBox>
+              
+                    <GroupBox Header="Search" DockPanel.Dock="Top">
+                        <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto">
 
 
+                            <Grid DockPanel.Dock="Top">
 
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="Search" DockPanel.Dock="Top">
-                <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="120"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <RadioButton GroupName="SearchRegex" x:Name="rbRegex" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=Regex, Converter={StaticResource ebc}}" ToolTip="Regular expression search" TabIndex="11" Content="_Regex"/>
+                                    <RadioButton GroupName="SearchXPath" x:Name="rbXPath" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=XPath, Converter={StaticResource ebc}}" ToolTip="XPath search (XML documents only)" TabIndex="12" Content="_XPath"/>
+                                    <RadioButton GroupName="SearchText" x:Name="rbText" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=PlainText, Converter={StaticResource ebc}}" ToolTip="Plain text search" TabIndex="13" Content="_Text"/>
+                                    <RadioButton GroupName="SearchSoundex" x:Name="rbSoundex" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=Soundex, Converter={StaticResource ebc}}" ToolTip="Phonetic search" TabIndex="14" Content="_Phonetic"/>
+                                </StackPanel>
+                                <Label Grid.Column="1" Content="{Binding ValidationMessage}"/>
+                                <StackPanel Margin="0 0 0 2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <CheckBox ToolTip="{Binding IsBookmarkedTooltip}" Margin="0 0 5 0" Width="20"
+								Style="{DynamicResource MetroButton}" Template="{DynamicResource FavsMetroButtonTemplate}" IsChecked="{Binding IsBookmarked}" 
+                                      Command="{Binding BookmarkAddCommand}"/>
+                                    <Button x:Name="btnTest" Command="{Binding TestCommand}" TabIndex="15" Content="Test" Width="60" Click="btnTest_Click"/>
+                                </StackPanel>
+
+                            </Grid>
+
+                            <Expander DockPanel.Dock="Bottom" x:Name="expOptions" IsExpanded="{Binding IsOptionsExpanded}">
+                                <Expander.Header>
+                                    <WrapPanel>
+                                        <TextBlock><Run Text="Options"/></TextBlock>
+                                        <TextBlock Margin="15,0,0,0" Text="{Binding OptionsSummary}"/>
+                                    </WrapPanel>
+                                </Expander.Header>
+                                <StackPanel>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <CheckBox Margin="3" x:Name="cbCaseSensitive" IsChecked="{Binding CaseSensitive}" IsEnabled="{Binding IsCaseSensitiveEnabled}" TabIndex="20" Content="C_ase sensitive"/>
+                                        <CheckBox Margin="3" x:Name="cbMultiline" IsChecked="{Binding Multiline}" IsEnabled="{Binding IsMultilineEnabled}" TabIndex="21" Content="_Multiline"/>
+                                        <CheckBox Margin="3" x:Name="cbWholeWord" IsChecked="{Binding WholeWord}" IsEnabled="{Binding IsWholeWordEnabled}" TabIndex="22" Content="_Whole word"/>
+                                        <CheckBox Margin="3" x:Name="cbSingleline" IsChecked="{Binding Singleline}" IsEnabled="{Binding IsSinglelineEnabled}" TabIndex="23" Content="_Dot as newline"/>
+                                        <CheckBox Margin="3" x:Name="cbStopAfterFirstMatch" IsChecked="{Binding StopAfterFirstMatch}" TabIndex="24" Content="Stop after _first match"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Expander>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="5" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"><Run Text="Search for:"/></TextBlock>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Text="{Binding SearchFor}" IsEditable="True" x:Name="tbSearchFor" ItemsSource="{Binding FastSearchBookmarks}" Style="{DynamicResource MultilineComboBoxStyle}"
+                                        FontFamily="Consolas" FontSize="12" TabIndex="5" my:DiginesisHelpProvider.HelpKeyword="RegularExpressions" my:DiginesisHelpProvider.HelpNavigator="Topic"
+                                        my:DiginesisHelpProvider.ShowHelp="True" Padding="5">
+                                    <ComboBox.ToolTip>
+                                        <TextBlock><Run Text=". matches all characters"/><LineBreak/><Run Text="\w matches alpha-numerics"/><LineBreak/><Run Text="\d matches digits"/><LineBreak/><Run Text="\s matches space"/><LineBreak/><Run Text="* matches any number of characters"/><LineBreak/><Run Text="{}{1,3} matches 1 to 3 characters"/><LineBreak/><Run Text="For more Regex patterns hit F1"/></TextBlock>
+                                    </ComboBox.ToolTip>
+                                </ComboBox>
+                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"><Run Text="Replace for:"/></TextBlock>
+                                <ComboBox Grid.Row="2" Grid.Column="1" Text="{Binding ReplaceWith}" IsEditable="True" x:Name="tbReplaceWith" ItemsSource="{Binding FastReplaceBookmarks}" Style="{DynamicResource MultilineComboBoxStyle}"
+                                                  FontFamily="Consolas" FontSize="12" TabIndex="5" Padding="5">
+                                    <ComboBox.ToolTip>
+                                        <TextBlock><Run Text="$&amp; replaces entire regex"/><LineBreak/><Run Text="$1, $2, $3, etc... inserts the text matched between capturing parentheses into the replacement text"/><LineBreak/><Run Text="$$ inserts a single dollar sign into the replacement text"/></TextBlock>
+                                    </ComboBox.ToolTip>
+                                </ComboBox>
+                            </Grid>
+                        </DockPanel>
+                    </GroupBox>
                     <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" Grid.Column="0">
-                            <RadioButton GroupName="SearchRegex" x:Name="rbRegex" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=Regex, Converter={StaticResource ebc}}" ToolTip="Regular expression search" TabIndex="11" Content="_Regex"/>
-                            <RadioButton GroupName="SearchXPath" x:Name="rbXPath" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=XPath, Converter={StaticResource ebc}}" ToolTip="XPath search (XML documents only)" TabIndex="12" Content="_XPath"/>
-                            <RadioButton GroupName="SearchText" x:Name="rbText" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=PlainText, Converter={StaticResource ebc}}" ToolTip="Plain text search" TabIndex="13" Content="_Text"/>
-                            <RadioButton GroupName="SearchSoundex" x:Name="rbSoundex" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=Soundex, Converter={StaticResource ebc}}" ToolTip="Phonetic search" TabIndex="14" Content="_Phonetic"/>
-                        </StackPanel>
-                        <Label Grid.Column="1" Content="{Binding ValidationMessage}"/>
-                        <StackPanel Margin="0 0 0 2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <CheckBox ToolTip="{Binding IsBookmarkedTooltip}" Margin="0 0 5 0" Width="20"
-								Style="{DynamicResource MetroButton}" Template="{DynamicResource FavsMetroButtonTemplate}" IsChecked="{Binding IsBookmarked}" 
-                                      Command="{Binding BookmarkAddCommand}"/>
-                            <Button x:Name="btnTest" Command="{Binding TestCommand}" TabIndex="15" Content="Test" Width="60" Click="btnTest_Click"/>
-                        </StackPanel>
-                    </Grid>
-                    <Expander DockPanel.Dock="Bottom" x:Name="expOptions" IsExpanded="{Binding IsOptionsExpanded}">
-                        <Expander.Header>
-                            <WrapPanel>
-                                <TextBlock><Run Text="Options"/></TextBlock>
-                                <TextBlock Margin="15,0,0,0" Text="{Binding OptionsSummary}"/>
-                            </WrapPanel>
-                        </Expander.Header>
-                        <StackPanel>
-                            <WrapPanel Orientation="Horizontal">
-                                <CheckBox Margin="3" x:Name="cbCaseSensitive" IsChecked="{Binding CaseSensitive}" IsEnabled="{Binding IsCaseSensitiveEnabled}" TabIndex="20" Content="C_ase sensitive"/>
-                                <CheckBox Margin="3" x:Name="cbMultiline" IsChecked="{Binding Multiline}" IsEnabled="{Binding IsMultilineEnabled}" TabIndex="21" Content="_Multiline"/>
-                                <CheckBox Margin="3" x:Name="cbWholeWord" IsChecked="{Binding WholeWord}" IsEnabled="{Binding IsWholeWordEnabled}" TabIndex="22" Content="_Whole word"/>
-                                <CheckBox Margin="3" x:Name="cbSingleline" IsChecked="{Binding Singleline}" IsEnabled="{Binding IsSinglelineEnabled}" TabIndex="23" Content="_Dot as newline"/>
-                                <CheckBox Margin="3" x:Name="cbStopAfterFirstMatch" IsChecked="{Binding StopAfterFirstMatch}" TabIndex="24" Content="Stop after _first match"/>
-                            </WrapPanel>
-                        </StackPanel>
-                    </Expander>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="5" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"><Run Text="Search for:"/></TextBlock>
-                        <ComboBox Grid.Row="0" Grid.Column="1" Text="{Binding SearchFor}" IsEditable="True" x:Name="tbSearchFor" ItemsSource="{Binding FastSearchBookmarks}" Style="{DynamicResource MultilineComboBoxStyle}"
-                                        FontFamily="Consolas" FontSize="12" TabIndex="5" my:DiginesisHelpProvider.HelpKeyword="RegularExpressions" my:DiginesisHelpProvider.HelpNavigator="Topic"
-                                        my:DiginesisHelpProvider.ShowHelp="True" Padding="5">
-                            <ComboBox.ToolTip>
-                                <TextBlock><Run Text=". matches all characters"/><LineBreak/><Run Text="\w matches alpha-numerics"/><LineBreak/><Run Text="\d matches digits"/><LineBreak/><Run Text="\s matches space"/><LineBreak/><Run Text="* matches any number of characters"/><LineBreak/><Run Text="{}{1,3} matches 1 to 3 characters"/><LineBreak/><Run Text="For more Regex patterns hit F1"/></TextBlock>
-                            </ComboBox.ToolTip>
-                        </ComboBox>
-                        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"><Run Text="Replace for:"/></TextBlock>
-                        <ComboBox Grid.Row="2" Grid.Column="1" Text="{Binding ReplaceWith}" IsEditable="True" x:Name="tbReplaceWith" ItemsSource="{Binding FastReplaceBookmarks}" Style="{DynamicResource MultilineComboBoxStyle}"
-                                                  FontFamily="Consolas" FontSize="12" TabIndex="5" Padding="5">
-                            <ComboBox.ToolTip>
-                                <TextBlock><Run Text="$&amp; replaces entire regex"/><LineBreak/><Run Text="$1, $2, $3, etc... inserts the text matched between capturing parentheses into the replacement text"/><LineBreak/><Run Text="$$ inserts a single dollar sign into the replacement text"/></TextBlock>
-                            </ComboBox.ToolTip>
-                        </ComboBox>
-                    </Grid>
-                </DockPanel>
-            </GroupBox>
-            <Grid DockPanel.Dock="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <StackPanel HorizontalAlignment="Right" Grid.Column="0" Orientation="Horizontal">
-                    <CheckBox IsChecked="{Binding SearchInResultsContent}" Visibility="{Binding CanSearchInResults, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" Margin="0 0 5 0" Content="Search _in results"/>
-                    <CheckBox IsChecked="{Binding PreviewFileContent}" VerticalAlignment="Center" Margin="0 0 5 0" Content="Pre_view file"/>
-                    <Button x:Name="btnSearch" Content="_Search" Command="{Binding SearchCommand}" 
+                        <StackPanel HorizontalAlignment="Right" Grid.Column="0" Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding SearchInResultsContent}" Visibility="{Binding CanSearchInResults, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" Margin="0 0 5 0" Content="Search _in results"/>
+                            <CheckBox IsChecked="{Binding PreviewFileContent}" VerticalAlignment="Center" Margin="0 0 5 0" Content="Pre_view file"/>
+                            <Button x:Name="btnSearch" Content="_Search" Command="{Binding SearchCommand}" 
 						    Grid.Row="0" Grid.Column="0" Width="67" Margin="3" IsDefault="True" TabIndex="50">
-                    </Button>
-                    <Button Width="64" Margin="3" Content="Replace" x:Name="btnReplace" Command="{Binding ReplaceCommand}" TabIndex="51" />
-                    <!--<splitButton:SplitButton x:Name="btnOtherActions" Content="&gt;&gt;"
+                            </Button>
+                            <Button Width="64" Margin="3" Content="Replace" x:Name="btnReplace" Command="{Binding ReplaceCommand}" TabIndex="51" />
+                            <!--<splitButton:SplitButton x:Name="btnOtherActions" Content="&gt;&gt;"
 						    Grid.Row="0" Grid.Column="0"
 						    Width="43" VerticalAlignment="Top"
 						    HorizontalAlignment="Left"  Margin="3" Command="{Binding OtherActionsCommand}" TabIndex="52">
@@ -179,29 +167,62 @@
                         <MenuItem x:Name="copyToClipboardToolStripMenuItem" Header="File names to clipboard" Style="{StaticResource DefaultStyle}" Command="{Binding CopyToClipboardCommand}"/>
                         <MenuItem x:Name="saveAsCSVToolStripMenuItem" Header="Save as CSV..." Style="{StaticResource DefaultStyle}" Command="{Binding SaveAsCsvCommand}"/>
                     </splitButton:SplitButton>-->
-                    <Button Content=">>" x:Name="btnOtherActions" Width="30" Margin="3" Click="btnOtherActions_Click" 
+                            <Button Content=">>" x:Name="btnOtherActions" Width="30" Margin="3" Click="btnOtherActions_Click" 
                             ContextMenuService.Placement="Bottom" IsEnabled="{Binding CanSearchInResults}">
-                        <Button.ContextMenu>
-                            <ContextMenu x:Name="advanceContextMenu">
-                                <MenuItem x:Name="copyFilesToolStripMenuItem" Header="Copy files..." Style="{StaticResource DefaultStyle}" Command="{Binding CopyFilesCommand}"/>
-                                <MenuItem x:Name="moveFilesToolStripMenuItem" Header="Move files..." Style="{StaticResource DefaultStyle}" Command="{Binding MoveFilesCommand}"/>
-                                <MenuItem x:Name="deleteFilesToolStripMenuItem" Header="Delete files..." Style="{StaticResource DefaultStyle}" Command="{Binding DeleteFilesCommand}"/>
-                                <Separator/>
-                                <MenuItem x:Name="copyToClipboardToolStripMenuItem" Header="File names to clipboard" Style="{StaticResource DefaultStyle}" Command="{Binding CopyToClipboardCommand}"/>
-                                <MenuItem x:Name="saveAsCSVToolStripMenuItem" Header="Save as CSV..." Style="{StaticResource DefaultStyle}" Command="{Binding SaveAsCsvCommand}"/>
-                                <MenuItem x:Name="copyAsCSVToolStripMenuItem" Header="CSV to clipboard" Style="{StaticResource DefaultStyle}" Command="{Binding CopyAsCsvCommand}"/>
-                            </ContextMenu>
-                        </Button.ContextMenu>
-                    </Button>
+                                <Button.ContextMenu>
+                                    <ContextMenu x:Name="advanceContextMenu">
+                                        <MenuItem x:Name="copyFilesToolStripMenuItem" Header="Copy files..." Style="{StaticResource DefaultStyle}" Command="{Binding CopyFilesCommand}"/>
+                                        <MenuItem x:Name="moveFilesToolStripMenuItem" Header="Move files..." Style="{StaticResource DefaultStyle}" Command="{Binding MoveFilesCommand}"/>
+                                        <MenuItem x:Name="deleteFilesToolStripMenuItem" Header="Delete files..." Style="{StaticResource DefaultStyle}" Command="{Binding DeleteFilesCommand}"/>
+                                        <Separator/>
+                                        <MenuItem x:Name="copyToClipboardToolStripMenuItem" Header="File names to clipboard" Style="{StaticResource DefaultStyle}" Command="{Binding CopyToClipboardCommand}"/>
+                                        <MenuItem x:Name="saveAsCSVToolStripMenuItem" Header="Save as CSV..." Style="{StaticResource DefaultStyle}" Command="{Binding SaveAsCsvCommand}"/>
+                                        <MenuItem x:Name="copyAsCSVToolStripMenuItem" Header="CSV to clipboard" Style="{StaticResource DefaultStyle}" Command="{Binding CopyAsCsvCommand}"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
 
-                    <Button Width="64" Margin="3" Content="_Cancel" x:Name="btnCancel" Command="{Binding CancelCommand}" TabIndex="53" />
-                </StackPanel>
+                            <Button Width="64" Margin="3" Content="_Cancel" x:Name="btnCancel" Command="{Binding CancelCommand}" TabIndex="53" />
+                        </StackPanel>
+
+                    </Grid>
+
+                    <Controls:ResultsTree DataContext="{Binding SearchResults}" Grid.Row="3"/>
+                </DockPanel>
+
+                <StatusBar ClipToBounds="False" Grid.Row="4" x:Name="statusBar">
+                    <ProgressBar x:Name="barProgressBar" Height="18" IsIndeterminate="{Binding IsOperationInProgress}" Width="150" />
+                    <TextBlock x:Name="lblStatus" Text="{Binding StatusMessage}" />
+                </StatusBar>
+
             </Grid>
-            <Controls:ResultsTree DataContext="{Binding SearchResults}" Grid.Row="3"/>
-        </DockPanel>
-        <StatusBar ClipToBounds="False" Grid.Row="4" x:Name="statusBar">
-            <ProgressBar x:Name="barProgressBar" Height="18" IsIndeterminate="{Binding IsOperationInProgress}" Width="150" />
-            <TextBlock x:Name="lblStatus" Text="{Binding StatusMessage}" />
-        </StatusBar>
-    </Grid>
+        </TabItem>
+        <TabItem Header="VoidSearch">
+            <Canvas>
+                <GroupBox Header="Filename Search" DockPanel.Dock="Top">
+
+
+                    <Grid  Name="grid1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="48" />
+                        </Grid.ColumnDefinitions>
+                        <WindowsFormsHost>
+                            <sb:FileList   x:Name="SHFileList" Click="SHFileList_Click"/>
+                        </WindowsFormsHost>
+
+                        <Button Command="{Binding FileNameSearch}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnFileNameSearch" 
+                            ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
+
+
+
+                    </Grid>
+
+
+                </GroupBox>
+                <CheckBox Command="{Binding EvEnable}" Grid.Column="1" Width="42" HorizontalAlignment="Left" Content="Ev"/>
+                <TextBox Text="boob" Grid.Column="1"  Margin="47,0,0,0" KeyUp="TextBox_KeyUp"/>
+            </Canvas>
+        </TabItem>
+    </TabControl>
 </Window>
