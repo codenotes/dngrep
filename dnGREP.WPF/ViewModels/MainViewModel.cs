@@ -176,9 +176,27 @@ namespace dnGREP.WPF
                 return _fileNameSearch;
             }
         }
-        
-        
-        
+
+
+        RelayCommand _EvEnable;
+        /// <summary>
+        /// Returns a command that opens file browse dialog.
+        /// </summary>
+        public ICommand EvEnable
+        {
+            get
+            {
+                if (_EvEnable == null)
+                {
+                    _EvEnable = new RelayCommand(
+                        param => this.OnEvEnable()
+                        );
+                }
+                return _EvEnable;
+            }
+        }
+
+
         
         RelayCommand _browseCommand;
         /// <summary>
@@ -810,6 +828,15 @@ namespace dnGREP.WPF
         private void onFileNameSearch()
         {
             System.Windows.Forms.MessageBox.Show("blah");
+        }
+
+
+        private void OnEvEnable()
+        {
+            EvCheckBox = !EvCheckBox;
+
+           
+            System.Windows.Forms.MessageBox.Show(EvCheckBox.ToString());
         }
 
 

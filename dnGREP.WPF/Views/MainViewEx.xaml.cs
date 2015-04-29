@@ -23,6 +23,9 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Blue.Windows;
+using Jam.Shell;
+
+
 
 namespace dnGREP.WPF
 {
@@ -87,6 +90,21 @@ namespace dnGREP.WPF
             inputData.StickyWindow.StickOnMove = true;
             DataObject.AddPastingHandler(tbSearchFor, new DataObjectPastingEventHandler(onPaste));
             DataObject.AddPastingHandler(tbReplaceWith, new DataObjectPastingEventHandler(onPaste));
+
+         //   System.Windows.Forms.Integration.WindowsFormsHost host =
+         //       new System.Windows.Forms.Integration.WindowsFormsHost();
+
+         //   // Create the MaskedTextBox control.
+         ////   TextBox mtbDate = new TextBox();
+         //  var j=new Jam.Shell.FileList();
+         //  // mtbDate.Text = "hitherebob";
+         //   // Assign the MaskedTextBox control as the host control's child.
+         //   host.Child = j;
+
+         //   // Add the interop host control to the Grid 
+         //   // control's collection of child controls. 
+         //   this.grid1.Children.Add(host);
+
 		}
 
         /// <summary>
@@ -210,6 +228,21 @@ namespace dnGREP.WPF
             advanceContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             advanceContextMenu.PlacementTarget = (UIElement)sender;
             advanceContextMenu.IsOpen = true;
+        }
+
+        private void SHFileList_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            SHFileList.Add("c:\\temp\\test.xml");
         }        
 	}
 }

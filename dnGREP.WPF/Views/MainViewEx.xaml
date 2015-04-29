@@ -1,4 +1,6 @@
 ﻿<Window
+    xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+    xmlns:sb="clr-namespace:Jam.Shell;assembly=ShellBrowser"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:splitButton="clr-namespace:Wpf.Controls;assembly=Wpf.SplitButton"
@@ -59,8 +61,12 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="48" />
                     </Grid.ColumnDefinitions>
-                    <Controls:FolderSelectDropdown Grid.Column="0" x:Name="tbFolderName"/>
-                    <Button Command="{Binding BrowseCommand}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnBrowse" 
+                    <StackPanel Orientation="Vertical" >
+                        <TextBox Text="boob" Grid.Column="1"  Margin="47,0,0,0" KeyUp="TextBox_KeyUp"/>
+                        <CheckBox Command="{Binding EvEnable}" Grid.Column="1" Width="42" HorizontalAlignment="Left" Content="Ev"/>
+                        <Controls:FolderSelectDropdown Grid.Column="1" x:Name="tbFolderName" Margin="47,0,0,0"/>
+                    </StackPanel>
+                        <Button Command="{Binding BrowseCommand}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnBrowse" 
                             ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
                 </Grid>
             </GroupBox>
@@ -70,13 +76,18 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="48" />
                     </Grid.ColumnDefinitions>
-                    
-                    <TextBox></TextBox>
+                    <Grid Name="grid1">
+
+                        <WindowsFormsHost>
+                            <sb:FileList   x:Name="SHFileList" Click="SHFileList_Click"/>
+                        </WindowsFormsHost>
+
+                    </Grid>
                     <Button Command="{Binding FileNameSearch}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnFileNameSearch" 
                             ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
-                    
-                    
-                    
+
+
+
                 </Grid>
             </GroupBox>
             <GroupBox Header="Search" DockPanel.Dock="Top">
@@ -94,12 +105,12 @@
                             <RadioButton GroupName="SearchSoundex" x:Name="rbSoundex" Margin="3" IsChecked="{Binding TypeOfSearch, ConverterParameter=Soundex, Converter={StaticResource ebc}}" ToolTip="Phonetic search" TabIndex="14" Content="_Phonetic"/>
                         </StackPanel>
                         <Label Grid.Column="1" Content="{Binding ValidationMessage}"/>
-						<StackPanel Margin="0 0 0 2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <StackPanel Margin="0 0 0 2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                             <CheckBox ToolTip="{Binding IsBookmarkedTooltip}" Margin="0 0 5 0" Width="20"
 								Style="{DynamicResource MetroButton}" Template="{DynamicResource FavsMetroButtonTemplate}" IsChecked="{Binding IsBookmarked}" 
                                       Command="{Binding BookmarkAddCommand}"/>
-							<Button x:Name="btnTest" Command="{Binding TestCommand}" TabIndex="15" Content="Test" Width="60"/>
-						</StackPanel>                        
+                            <Button x:Name="btnTest" Command="{Binding TestCommand}" TabIndex="15" Content="Test" Width="60" Click="btnTest_Click"/>
+                        </StackPanel>
                     </Grid>
                     <Expander DockPanel.Dock="Bottom" x:Name="expOptions" IsExpanded="{Binding IsOptionsExpanded}">
                         <Expander.Header>
@@ -150,7 +161,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-				<StackPanel HorizontalAlignment="Right" Grid.Column="0" Orientation="Horizontal">
+                <StackPanel HorizontalAlignment="Right" Grid.Column="0" Orientation="Horizontal">
                     <CheckBox IsChecked="{Binding SearchInResultsContent}" Visibility="{Binding CanSearchInResults, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" Margin="0 0 5 0" Content="Search _in results"/>
                     <CheckBox IsChecked="{Binding PreviewFileContent}" VerticalAlignment="Center" Margin="0 0 5 0" Content="Pre_view file"/>
                     <Button x:Name="btnSearch" Content="_Search" Command="{Binding SearchCommand}" 
@@ -182,11 +193,11 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    
+
                     <Button Width="64" Margin="3" Content="_Cancel" x:Name="btnCancel" Command="{Binding CancelCommand}" TabIndex="53" />
                 </StackPanel>
-            </Grid>            
-            <Controls:ResultsTree DataContext="{Binding SearchResults}" Grid.Row="3"/>            
+            </Grid>
+            <Controls:ResultsTree DataContext="{Binding SearchResults}" Grid.Row="3"/>
         </DockPanel>
         <StatusBar ClipToBounds="False" Grid.Row="4" x:Name="statusBar">
             <ProgressBar x:Name="barProgressBar" Height="18" IsIndeterminate="{Binding IsOperationInProgress}" Width="150" />

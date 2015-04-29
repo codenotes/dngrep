@@ -56,6 +56,8 @@ namespace dnGREP.WPF
             }
         }
 
+
+    
         private ObservableGrepSearchResults searchResults = new ObservableGrepSearchResults();
         public ObservableGrepSearchResults SearchResults
         {
@@ -100,6 +102,19 @@ namespace dnGREP.WPF
         {
             get { return encodings; }
         }
+
+        private bool evCheckBox=false;
+        public bool EvCheckBox
+        {
+            get { return evCheckBox; }
+
+            set
+            {
+                evCheckBox = value;
+                base.OnPropertyChanged(() => EvCheckBox);
+            }
+        }
+
 
         private string fileOrFolderPath;
         public string FileOrFolderPath
