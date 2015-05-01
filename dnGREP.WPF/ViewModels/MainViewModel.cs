@@ -827,7 +827,7 @@ namespace dnGREP.WPF
 
         private void onFileNameSearch()
         {
-            System.Windows.Forms.MessageBox.Show("blah");
+            //System.Windows.Forms.MessageBox.Show("blah");
         }
 
 

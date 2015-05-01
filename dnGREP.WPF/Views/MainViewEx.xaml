@@ -63,15 +63,15 @@
                                 <ColumnDefinition Width="48" />
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Vertical" >
-                              
-                               
+
+
                                 <Controls:FolderSelectDropdown Grid.Column="1" x:Name="tbFolderName" Margin="47,0,0,0"/>
                             </StackPanel>
                             <Button Command="{Binding BrowseCommand}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnBrowse" 
                             ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
                         </Grid>
                     </GroupBox>
-              
+
                     <GroupBox Header="Search" DockPanel.Dock="Top">
                         <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto">
 
@@ -198,21 +198,39 @@
             </Grid>
         </TabItem>
         <TabItem Header="VoidSearch">
-            <Canvas>
-                <GroupBox Header="Filename Search" DockPanel.Dock="Top">
 
 
-                    <Grid  Name="grid1">
+            <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="28" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox Text="boob" Grid.Row="0" Grid.Column="0"   KeyUp="TextBox_KeyUp" Grid.ColumnSpan="2" RenderTransformOrigin="1.347,0.614"/>
+
+                <Button Command="{Binding FileNameSearch}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnFileNameSearch" 
+                            ToolTip="Browse for folder or files" TabIndex="4" Content="..." Grid.Row="0" Click="btnFileNameSearch_Click"/>
+
+
+                <Button Content="test" Grid.Row="3" Click="Button_Click"></Button>
+                <GroupBox Header="Filename Search" DockPanel.Dock="Top" Grid.Row="1" Margin="0,0,-158,24" Grid.RowSpan="2" Grid.ColumnSpan="2"  >
+
+
+                    <Grid  Name="grid1" Margin="0,0,-12,0" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="48" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <WindowsFormsHost>
-                            <sb:FileList   x:Name="SHFileList" Click="SHFileList_Click"/>
+                        <WindowsFormsHost Grid.ColumnSpan="2" Margin="0,0,27,0">
+                            <sb:FileList   x:Name="SHFileList" Click="SHFileList_Click" SelectedIndexChanged="SHFileList_SelectedIndexChanged" />
                         </WindowsFormsHost>
 
-                        <Button Command="{Binding FileNameSearch}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnFileNameSearch" 
-                            ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
 
 
 
@@ -220,9 +238,13 @@
 
 
                 </GroupBox>
-                <CheckBox Command="{Binding EvEnable}" Grid.Column="1" Width="42" HorizontalAlignment="Left" Content="Ev"/>
-                <TextBox Text="boob" Grid.Column="1"  Margin="47,0,0,0" KeyUp="TextBox_KeyUp"/>
-            </Canvas>
+
+
+
+            </Grid>
+
+
+
         </TabItem>
     </TabControl>
 </Window>

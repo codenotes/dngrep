@@ -232,17 +232,53 @@ namespace dnGREP.WPF
 
         private void SHFileList_Click(object sender, EventArgs e)
         {
-            
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
-
+            
+        
         }
 
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
         {
+
+ 
+
+
+        }
+
+        private void btnFileNameSearch_Click(object sender, RoutedEventArgs e)
+        {
+            var p =  SHFileList.SelectedFiles;
+
+            
+
+           
+            Console.WriteLine("{0}", p.ToString());
+
+            
+            //foreach(var x in p)
+            //{
+
+            //    Console.WriteLine("one");
+            //    //Console.WriteLine("{0}", x.ToString());
+
+
+            //}
+        }
+
+        private void SHFileList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           Console.WriteLine("something changed");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
             SHFileList.Add("c:\\temp\\test.xml");
+            SHFileList.Add("c:\\temp\\test2.xml");
+
+            SHFileList.CheckBoxes = true;
         }        
 	}
 }
