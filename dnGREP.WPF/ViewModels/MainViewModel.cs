@@ -125,6 +125,46 @@ namespace dnGREP.WPF
                 return _optionsCommand;
             }
         }
+
+
+        RelayCommand _switchGrepTab;
+        public ICommand switchGrepTab
+        {
+            get
+            {
+                if (_optionsCommand == null)
+                {
+                    _switchGrepTab = new RelayCommand(
+                        param => this.grepTab()
+                        );
+                }
+              
+                return _switchGrepTab;
+            }
+
+        }
+
+        RelayCommand _switchVoidTab;
+        public ICommand switchVoidTab
+        {
+
+            get
+            {
+                if (_switchVoidTab == null)
+                {
+                    _switchVoidTab = new RelayCommand(
+                        param => this.voidTab()
+                        );
+                }
+
+                return _switchVoidTab;
+            }
+
+        }
+
+
+
+
         RelayCommand _helpCommand;
         /// <summary>
         /// Returns a help command
@@ -984,6 +1024,23 @@ namespace dnGREP.WPF
                 }
             }
         }
+
+        private void grepTab()
+        {
+            //MainTab.SelectedIndex = 0;
+
+            MainFormEx.gMainForm.changeTab(0);
+            //Console.WriteLine("grep tab");
+        }
+
+        private void voidTab()
+        {
+
+            MainFormEx.gMainForm.changeTab(1);
+           // Console.WriteLine("void tab");
+        }
+
+        
 
         private void showOptions()
         {

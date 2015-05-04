@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +26,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Blue.Windows;
 using Jam.Shell;
-
+using Everything;
 
 
 namespace dnGREP.WPF
@@ -34,13 +36,17 @@ namespace dnGREP.WPF
     /// </summary>
     public partial class MainFormEx : Window
     {
+        public static MainFormEx gMainForm = null;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
         private MainViewModel inputData;
         private bool isVisible = true;
 
+     
+
         public MainFormEx()
             : this (true)
-        {            
+        {
+            gMainForm = this;
         }
 
         public MainFormEx(bool isVisible)
@@ -55,6 +61,11 @@ namespace dnGREP.WPF
             this.isVisible = isVisible;
             inputData = new MainViewModel();
             this.DataContext = inputData;
+
+            changeTab(1);
+            SHFileList.Scrollable = true;
+
+
         }
 
         [DllImport("user32.dll")]
@@ -240,9 +251,36 @@ namespace dnGREP.WPF
         
         }
 
+        private void SendSelectedToGrep()
+        {
+            var p = SHFileList.SelectedItems;
+            string s = "";
+            CustomFileListItem c;
+            //            Console.WriteLine("{0}", p.ToString());
+
+
+
+            foreach (CustomFileListItem x in p)
+            {
+
+
+                s = s + x.Path + ";";
+
+                Console.WriteLine("{0}", x.Path);
+
+
+            }
+
+            tbFolderName.tbFolderName.Text = s;
+
+            changeTab(0);
+
+
+        }
+
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
         {
-
+            
  
 
 
@@ -250,35 +288,137 @@ namespace dnGREP.WPF
 
         private void btnFileNameSearch_Click(object sender, RoutedEventArgs e)
         {
-            var p =  SHFileList.SelectedFiles;
+       
 
-            
-
-           
-            Console.WriteLine("{0}", p.ToString());
-
-            
-            //foreach(var x in p)
-            //{
-
-            //    Console.WriteLine("one");
-            //    //Console.WriteLine("{0}", x.ToString());
-
-
-            //}
         }
 
         private void SHFileList_SelectedIndexChanged(object sender, EventArgs e)
         {
-           Console.WriteLine("something changed");
+         
         }
 
+        //bottom left button for testing code
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SHFileList.Add("c:\\temp\\test.xml");
-            SHFileList.Add("c:\\temp\\test2.xml");
 
-            SHFileList.CheckBoxes = true;
-        }        
+            SendSelectedToGrep();
+            //SHFileList.Add("c:\\temp\\test.xml");
+            //SHFileList.Add("c:\\temp\\test2.xml");
+            
+          //  tbFolderName.
+
+         //   SHFileList.CheckBoxes = true;
+
+            //FolderSelectDropdown
+            //.IsSelectedProperty = true;
+            
+
+        
+        }
+
+        public void changeTab(int i)
+        {
+            MainTab.SelectedIndex = i;//this works and flips tab
+
+            if(i==1)
+            {
+                txtSearch.Focus();
+            }
+
+
+        }
+
+        private void tbFolderName_KeyDown(object sender, KeyEventArgs e)
+        {
+         //   Console.WriteLine("kydown");
+        }
+
+        private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+        //    Console.WriteLine("{0}", e.Key);
+
+        }
+
+        private void TabItem_Drop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void TabControl_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MainTab_Initialized(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void EvSearchClick(object sender, RoutedEventArgs e)
+        {
+            int i;
+            const int bufsize = 260;
+            StringBuilder buf = new StringBuilder(bufsize);
+
+            SHFileList.Clear();
+
+            // set the search
+            EverythingSearch.Everything_SetSearchW(txtSearch.Text);
+
+            // use our own custom scrollbar... 			
+            // Everything_SetMax(listBox1.ClientRectangle.Height / listBox1.ItemHeight);
+            // Everything_SetOffset(VerticalScrollBarPosition...);
+
+            // execute the query
+            EverythingSearch.Everything_QueryW(true);
+
+            // sort by path
+            // Everything_SortResultsByPath();
+
+            // clear the old list of results			
+            //listBox1.Items.Clear();
+
+            // set the window title
+      //      Text = textBox1.Text + " - " + EverythingSearch.Everything_GetNumResults() + " Results";
+
+
+            // loop through the results, adding each result to the listbox.
+            for (i = 0; i < EverythingSearch.Everything_GetNumResults(); i++)
+            {
+                // get the result's full path and file name.
+                EverythingSearch.Everything_GetResultFullPathNameW(i, buf, bufsize);
+                SHFileList.Add(buf.ToString());
+
+                // add it to the list box				
+                //    listBox1.Items.Insert(i, buf);
+            }
+        }
+
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                EvSearchClick(sender, null);
+
+            }
+        }
+
+        private void TabItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtSearch.Focus();
+        }
+
+
+       
+        //private void switchGrepTab(object sender, EventArgs e)
+        //{
+        //    Console.WriteLine("tab switch from key");
+
+        //}
 	}
 }

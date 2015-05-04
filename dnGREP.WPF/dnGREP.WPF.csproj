@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;BUILD32</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisLogFile>..\bin\Debug\dnGREP.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
@@ -179,6 +179,7 @@
       <Link>Properties\AssemblyVersionCommon.cs</Link>
     </Compile>
     <Compile Include="DesignTimeData\DesignTimeData.cs" />
+    <Compile Include="Everything.cs" />
     <Compile Include="MVHelpers\CodeSnippet.cs" />
     <Compile Include="MVHelpers\LazyResultsList.cs" />
     <Compile Include="MVHelpers\PixelBasedScrollingBehavior.cs" />

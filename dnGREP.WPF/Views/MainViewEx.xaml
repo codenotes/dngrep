@@ -14,7 +14,7 @@
     SnapsToDevicePixels="True" ResizeMode="CanResizeWithGrip" AllowDrop="False"
     my:DiginesisHelpProvider.HelpKeyword="SearchWindow" my:DiginesisHelpProvider.HelpNavigator="Topic" my:DiginesisHelpProvider.ShowHelp="True" 
     WindowStartupLocation="Manual" TextOptions.TextFormattingMode="{Binding TextFormatting}"
-    FocusManager.FocusedElement="{Binding ElementName=tbSearchFor}" Activated="Window_Activated" StateChanged="Window_StateChanged">
+    FocusManager.FocusedElement="{Binding ElementName=tbSearchFor}" Activated="Window_Activated" StateChanged="Window_StateChanged" Initialized="Window_Initialized">
     <!-- Resources -->
     <Window.Resources>
         <my:InverseBooleanConverter x:Key="InverseBooleanConverter" />
@@ -30,9 +30,16 @@
     </Window.Background>
     <Window.InputBindings>
         <KeyBinding Key="Escape" Command="{Binding CloseCommand}"/>
+        <KeyBinding Modifiers="Control"
+                    Key="G"
+                    Command="{Binding switchGrepTab}" />
+        <KeyBinding Modifiers="Control"
+                    Key="I"
+                    Command="{Binding switchVoidTab}" />
     </Window.InputBindings>
-    <TabControl>
-        <TabItem Header="Grep">
+
+    <TabControl GotFocus="TabControl_GotFocus" Name="MainTab" Initialized="MainTab_Initialized">
+        <TabItem Header="Grep" Drop="TabItem_Drop" Name="greptab">
             <Grid x:Name="gridMain" Margin="0,-1,0,1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
@@ -65,7 +72,7 @@
                             <StackPanel Orientation="Vertical" >
 
 
-                                <Controls:FolderSelectDropdown Grid.Column="1" x:Name="tbFolderName" Margin="47,0,0,0"/>
+                                <Controls:FolderSelectDropdown Grid.Column="1" x:Name="tbFolderName" Margin="47,0,0,0" KeyDown="tbFolderName_KeyDown"/>
                             </StackPanel>
                             <Button Command="{Binding BrowseCommand}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnBrowse" 
                             ToolTip="Browse for folder or files" TabIndex="4" Content="..."/>
@@ -197,10 +204,10 @@
 
             </Grid>
         </TabItem>
-        <TabItem Header="VoidSearch">
+        <TabItem Header="VoidSearch" GotFocus="TabItem_GotFocus">
 
-
-            <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewKeyDown="Grid_PreviewKeyDown">
+           
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -208,18 +215,20 @@
                     <RowDefinition Height="28" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="7.418" />
+                    <ColumnDefinition Width="9.373"/>
+                    <ColumnDefinition Width="8.627"/>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Text="boob" Grid.Row="0" Grid.Column="0"   KeyUp="TextBox_KeyUp" Grid.ColumnSpan="2" RenderTransformOrigin="1.347,0.614"/>
+                <TextBox x:Name="txtSearch" Text="" Grid.Row="0" Grid.Column="0"   KeyUp="TextBox_KeyUp" Grid.ColumnSpan="4" RenderTransformOrigin="1.347,0.614" KeyDown="txtSearch_KeyDown"/>
 
-                <Button Command="{Binding FileNameSearch}" Grid.Column="1" Width="42" HorizontalAlignment="Right" x:Name="btnFileNameSearch" 
-                            ToolTip="Browse for folder or files" TabIndex="4" Content="..." Grid.Row="0" Click="btnFileNameSearch_Click"/>
+                <Button Command="{Binding FileNameSearch}" Grid.Column="3" Width="42" HorizontalAlignment="Right" x:Name="btnEvSearch" 
+                            ToolTip="Browse for folder or files" TabIndex="4" Content="Search" Grid.Row="0" Click="EvSearchClick"/>
 
 
-                <Button Content="test" Grid.Row="3" Click="Button_Click"></Button>
-                <GroupBox Header="Filename Search" DockPanel.Dock="Top" Grid.Row="1" Margin="0,0,-158,24" Grid.RowSpan="2" Grid.ColumnSpan="2"  >
+                <Button Content="test" Grid.Row="3" Click="Button_Click" Grid.ColumnSpan="3" Margin="0,3,0,2"></Button>
+                <GroupBox Header="Filename Search" Grid.Row="1" Margin="0,0,-158,24" Grid.RowSpan="2" Grid.ColumnSpan="4"  >
 
 
                     <Grid  Name="grid1" Margin="0,0,-12,0" >

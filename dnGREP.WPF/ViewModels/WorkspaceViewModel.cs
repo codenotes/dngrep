@@ -16,6 +16,7 @@ namespace dnGREP.WPF
         #region Fields
 
         RelayCommand _closeCommand;
+        RelayCommand _grepTab;
 
         #endregion // Fields
 
