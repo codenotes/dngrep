@@ -162,6 +162,59 @@ namespace dnGREP.WPF
 
         }
 
+        RelayCommand _copySelections;
+        public ICommand copySelections
+        {
+
+            get
+            {
+                if (_copySelections == null)
+                {
+                    _copySelections = new RelayCommand(
+                        param => this.copyAll()
+                        );
+                }
+
+                return _copySelections;
+            }
+
+        }
+
+        private void copyAll()
+        {
+            MainFormEx.gMainForm.copyAll();
+        }
+
+
+
+        RelayCommand _turnOnChecks;
+        public ICommand turnOnChecks
+        {
+
+            get
+            {
+                if (_turnOnChecks == null)
+                {
+                    _turnOnChecks = new RelayCommand(
+                        param => this.checksOn()
+                        );
+                }
+
+                return _turnOnChecks;
+            }
+
+        }
+
+        private void checksOn()
+        {
+            MainFormEx.gMainForm.turnOnChecks();
+        }
+
+
+
+
+
+
 
 
 

@@ -356,6 +356,10 @@
       <Project>{DB68B5D3-5E4B-47D0-AA86-83D7C181A1E4}</Project>
       <Name>dnGREP.Engines</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GregShellLibrary\GregShellLibrary.csproj">
+      <Project>{71924539-4c1c-4c3e-b182-5a55c58c5694}</Project>
+      <Name>GregShellLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NLog.XmlLayout\NLog.XmlLayout.csproj">
       <Project>{1B364890-BBE6-4167-AF65-FE1C01E8C419}</Project>
       <Name>NLog.XmlLayout</Name>

@@ -385,6 +385,8 @@ namespace Greg.EverythingShell
 
         protected override void WndProc(ref Message m)
         {
+
+          //  MessageBox.Show("!");
             base.WndProc(ref m);
 
             if (!bInitialized)

@@ -1,6 +1,7 @@
 ﻿<Window
     xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
     xmlns:sb="clr-namespace:Jam.Shell;assembly=ShellBrowser"
+     xmlns:sb2="clr-namespace:Greg.EverythingShell;assembly=GregShellLibrary"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:splitButton="clr-namespace:Wpf.Controls;assembly=Wpf.SplitButton"
@@ -36,6 +37,13 @@
         <KeyBinding Modifiers="Control"
                     Key="I"
                     Command="{Binding switchVoidTab}" />
+        <KeyBinding Modifiers="Control"
+                    Key="K"
+                    Command="{Binding turnOnChecks}" />
+        <KeyBinding Modifiers="Control"
+                    Key="E"
+                    Command="{Binding copySelections}" />
+
     </Window.InputBindings>
 
     <TabControl GotFocus="TabControl_GotFocus" Name="MainTab" Initialized="MainTab_Initialized">
@@ -224,7 +232,7 @@
                 <TextBox x:Name="txtSearch" Text="" Grid.Row="0" Grid.Column="0"   KeyUp="TextBox_KeyUp" Grid.ColumnSpan="4" RenderTransformOrigin="1.347,0.614" KeyDown="txtSearch_KeyDown"/>
 
                 <Button Command="{Binding FileNameSearch}" Grid.Column="3" Width="42" HorizontalAlignment="Right" x:Name="btnEvSearch" 
-                            ToolTip="Browse for folder or files" TabIndex="4" Content="Search" Grid.Row="0" Click="EvSearchClick"/>
+                            ToolTip="Browse for folder or files" TabIndex="4" Content="Search" Grid.Row="0" Click="EvSearchClick" VerticalAlignment="Top"/>
 
 
                 <Button Content="test" Grid.Row="3" Click="Button_Click" Grid.ColumnSpan="3" Margin="0,3,0,2"></Button>
@@ -236,8 +244,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <WindowsFormsHost Grid.ColumnSpan="2" Margin="0,0,27,0">
-                            <sb:FileList   x:Name="SHFileList" Click="SHFileList_Click" SelectedIndexChanged="SHFileList_SelectedIndexChanged" />
+                        <WindowsFormsHost Grid.ColumnSpan="2" Margin="0,0,170,0">
+                            <sb2:FileList2   x:Name="SHFileList" Click="SHFileList_Click" SelectedIndexChanged="SHFileList_SelectedIndexChanged" Enabled="True" />
                         </WindowsFormsHost>
 
 

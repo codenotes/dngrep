@@ -356,11 +356,23 @@ namespace dnGREP.WPF
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-           
+
+            SHFileList.StartMessagePump = true;
+            SHFileList.ShellControlConnector = new Jam.Shell.ShellControlConnector();
+         
         }
 
         private void EvSearchClick(object sender, RoutedEventArgs e)
         {
+
+
+            SHFileList.SearchEverything(txtSearch.Text);
+
+
+
+            return;
+
+            //below is old legacy
             int i;
             const int bufsize = 260;
             StringBuilder buf = new StringBuilder(bufsize);
@@ -413,12 +425,21 @@ namespace dnGREP.WPF
             txtSearch.Focus();
         }
 
-
+        
        
-        //private void switchGrepTab(object sender, EventArgs e)
-        //{
-        //    Console.WriteLine("tab switch from key");
+        public void turnOnChecks()
+        {
+            Console.WriteLine("checks on");
+            SHFileList.CheckBoxes = !SHFileList.CheckBoxes;
 
-        //}
+
+        }
+
+        public void copyAll()
+        {
+            Console.WriteLine("copy all");
+            SendSelectedToGrep();
+
+        }
 	}
 }

@@ -49,6 +49,7 @@ namespace EvMenu
         private System.Windows.Forms.ToolStripMenuItem oneToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem twoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fourToolStripMenuItem;
         public System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 
         private Form cbForm;
@@ -59,6 +60,7 @@ namespace EvMenu
             oneToolStripMenuItem = new ToolStripMenuItem();
             twoToolStripMenuItem = new ToolStripMenuItem();
             threeToolStripMenuItem = new ToolStripMenuItem();
+            fourToolStripMenuItem = new ToolStripMenuItem();
 
             InitMenu();
 
@@ -78,7 +80,8 @@ namespace EvMenu
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
             {
             this.oneToolStripMenuItem,
-            this.threeToolStripMenuItem
+            this.threeToolStripMenuItem//,
+          //  this.fourToolStripMenuItem
             });
 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
@@ -115,6 +118,12 @@ namespace EvMenu
             // 
             // Form1
 
+            this.fourToolStripMenuItem.Name = "fourToolStripMenuItem";
+            this.fourToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fourToolStripMenuItem.Text = "Copy To Grep";
+            //   this.fourToolStripMenuItem.Click += new System.EventHandler(this.fourToolStripMenuItem_Click);
+            this.fourToolStripMenuItem.Click += new System.EventHandler(this.CopyGrep);
+
         }
 
               private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
@@ -141,6 +150,13 @@ namespace EvMenu
         }
 
    //     private void threeToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void CopyGrep(object sender, EventArgs e)
+        {
+
+
+        }
+
 
         private void CopyClipboard(object sender, EventArgs e)
         {
